@@ -27,7 +27,7 @@ jobs:
         id: get_version
         run: |
           # Adjust this path if your pyproject.toml is located elsewhere relative to the repo root
-          PYPROJECT_PATH="src/client/ParseScore/pyproject.toml"
+          PYPROJECT_PATH="pyproject.toml"
           VERSION=$(python -c "import tomllib; print(tomllib.load(open('${PYPROJECT_PATH}', 'rb'))['project']['version'])")
           echo "package_version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version from ${PYPROJECT_PATH}: ${VERSION}"
