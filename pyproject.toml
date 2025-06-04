@@ -1,6 +1,6 @@
 [project]
 name = "parsescore-client"
-version = "0.14"  # TODO: Change version!
+version = "0.15"  # TODO: Change version!
 description = "ParseScore - A client for collecting character data and adding it to the WoW addon"
 readme = "README.md"
 requires-python = ">=3.13"
