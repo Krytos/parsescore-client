@@ -52,7 +52,7 @@ jobs:
         shell: bash
 
       - name: Install uv
-        uses: astral-sh/setup-uv@latest
+        uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
 
