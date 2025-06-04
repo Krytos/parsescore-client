@@ -6,14 +6,8 @@ ParseScore is a system for collecting, processing, and displaying player perform
 
 The system consists of three main components:
 
-1. **Server Backend**: Collects data from Warcraft Logs API and stores it in an SQLite database
 2. **Client**: Fetches data from the server and converts it to a format usable by the addon
-3. **Addon**: Displays player performance data in-game
 
-## Server Backend
-
-The server backend is responsible for collecting player performance data from Warcraft Logs and storing it in an SQLite
-database.
 
 ### Features
 
