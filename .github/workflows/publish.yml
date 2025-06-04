@@ -6,8 +6,8 @@ on:
       - 'v*'
   workflow_dispatch:
   workflow_run:
-    types:
-      - completed
+    types: [completed]
+    workflows: [tag]
 
 permissions:
   id-token: write
