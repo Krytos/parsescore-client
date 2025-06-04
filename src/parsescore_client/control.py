@@ -9,7 +9,7 @@ from .lua_converter import convert_to_lua
 logger.add("../logs/client.log", rotation="10 MB", retention="7 days", level="INFO")
 
 # --- Configuration ---
-SERVER_URL = "http://localhost:1337"  # Assuming server runs on port 8000
+SERVER_URL = "http://194.164.192.122:13377"
 ADDON_DIR = load_path() + "/Interface/AddOns/ParseScore/ParseScoreDB.lua"
 
 # --- Core Client Logic ---

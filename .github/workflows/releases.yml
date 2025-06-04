@@ -42,12 +42,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
-          path: dist/
+          path: dist/parsescore-client.VERSION_NUMBER
 
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
-          path: dist/
+          path: dist/parsescore-client.VERSION_NUMBER
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

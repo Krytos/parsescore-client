@@ -1,0 +1,78 @@
+name: Create Release Tag on Master Push
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  create_tag_if_needed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Extract version from pyproject.toml
+        id: get_version
+        run: |
+          # Adjust this path if your pyproject.toml is located elsewhere relative to the repo root
+          PYPROJECT_PATH="src/client/ParseScore/pyproject.toml"
+          VERSION=$(python -c "import tomllib; print(tomllib.load(open('${PYPROJECT_PATH}', 'rb'))['project']['version'])")
+          echo "package_version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Extracted version from ${PYPROJECT_PATH}: ${VERSION}"
+        shell: bash
+
+      - name: Construct tag name
+        id: construct_tag
+        run: |
+          VERSION="${{ steps.get_version.outputs.package_version }}"
+          TAG_NAME="v${VERSION}" # Assumes 'v' prefix for tags (e.g., v0.1.0)
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Potential tag: ${TAG_NAME}"
+        shell: bash
+
+      - name: Check if tag already exists
+        id: check_tag
+        run: |
+          TAG_NAME="${{ steps.construct_tag.outputs.tag_name }}"
+          # Check if tag exists in the remote repository
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG_NAME}"; then
+            echo "Tag ${TAG_NAME} already exists on remote."
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag ${TAG_NAME} does not exist on remote."
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
+      - name: Create and push tag
+        if: steps.check_tag.outputs.tag_exists == 'false'
+        run: |
+          TAG_NAME="${{ steps.construct_tag.outputs.tag_name }}"
+          echo "Creating and pushing new tag: ${TAG_NAME}"
+          
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@github.com"
+          
+          git tag "${TAG_NAME}"
+          git push origin "${TAG_NAME}"
+          echo "Tag ${TAG_NAME} pushed successfully."
+        shell: bash
+
+      - name: Notify if tag already exists
+        if: steps.check_tag.outputs.tag_exists == 'true'
+        run: |
+          TAG_NAME="${{ steps.construct_tag.outputs.tag_name }}"
+          echo "Skipping tag creation: Tag ${TAG_NAME} already exists."
+        shell: bash
