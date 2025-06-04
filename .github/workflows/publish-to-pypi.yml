@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+  workflow_run:
+    types:
+      - completed
+    workflows:
+      - create-release-tag
 
 permissions:
   id-token: write
@@ -57,7 +62,7 @@ jobs:
           python-version-file: "pyproject.toml"
 
       - name: Build package
-        run: uv build --frozen --out dist/
+        run: uv build
 
       - name: Store the distribution packages (optional, for inspection)
         uses: actions/upload-artifact@v4
