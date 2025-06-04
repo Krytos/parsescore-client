@@ -1,5 +1,5 @@
 [project]
-name = "parsescore"
+name = "parsescore-client"
 version = "0.1.0"
 description = "ParseScore - A client for collecting character data and adding it to the WoW addon"
 readme = "README.md"
@@ -30,7 +30,7 @@ dev = [
 ]
 
 [project.scripts]
-parsescore = "parsescore.app:main"
+parsescore = "parsescore-client.app:main"
 
 [tool.ruff]
 extend = "~/AppData/Roaming/ruff/ruff.toml"
