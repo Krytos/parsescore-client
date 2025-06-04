@@ -30,7 +30,7 @@ dev = [
 ]
 
 [project.scripts]
-parsescore = "parsescore-client.app:main"
+parsescore = "parsescore_client.app:main"
 
 [tool.ruff]
 extend = "~/AppData/Roaming/ruff/ruff.toml"

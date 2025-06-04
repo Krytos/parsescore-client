@@ -552,7 +552,7 @@ wheels = [
 ]
 
 [[package]]
-name = "parsescore"
+name = "parsescore-client"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
