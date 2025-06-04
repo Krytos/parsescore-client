@@ -26,9 +26,18 @@ jobs:
       - name: Extract version from pyproject.toml
         id: get_version
         run: |
-          # Adjust this path if your pyproject.toml is located elsewhere relative to the repo root
+          # Adjust this path if your pyproject.toml is located elsewhere
           PYPROJECT_PATH="pyproject.toml"
+          if [ ! -f "${PYPROJECT_PATH}" ]; then
+            echo "Error: ${PYPROJECT_PATH} not found!"
+            exit 1
+          fi
+          # Using Python 3.11+ tomllib module
           VERSION=$(python -c "import tomllib; print(tomllib.load(open('${PYPROJECT_PATH}', 'rb'))['project']['version'])")
+          if [ -z "${VERSION}" ]; then
+            echo "Error: Could not extract version from ${PYPROJECT_PATH}"
+            exit 1
+          fi
           echo "package_version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version from ${PYPROJECT_PATH}: ${VERSION}"
         shell: bash
@@ -37,7 +46,7 @@ jobs:
         id: construct_tag
         run: |
           VERSION="${{ steps.get_version.outputs.package_version }}"
-          TAG_NAME="v${VERSION}" # Assumes 'v' prefix for tags (e.g., v0.1.0)
+          TAG_NAME="v${VERSION}" # Standard 'v' prefix for tags (e.g., v0.1.0)
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "Potential tag: ${TAG_NAME}"
         shell: bash
@@ -63,7 +72,7 @@ jobs:
           echo "Creating and pushing new tag: ${TAG_NAME}"
           
           git config user.name "GitHub Actions"
-          git config user.email "github-actions@github.com"
+          git config user.email "actions@github.com" # More standard email for actions
           
           git tag "${TAG_NAME}"
           git push origin "${TAG_NAME}"
@@ -75,4 +84,5 @@ jobs:
         run: |
           TAG_NAME="${{ steps.construct_tag.outputs.tag_name }}"
           echo "Skipping tag creation: Tag ${TAG_NAME} already exists."
+          echo "If you intended to release this version, ensure pyproject.toml is updated to a new version."
         shell: bash
