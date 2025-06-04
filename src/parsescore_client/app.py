@@ -3,8 +3,9 @@ from threading import Thread
 from tkinter import filedialog
 
 import flet as ft
-from config import load_path, save_path
-from control import update_background
+
+from .config import load_path, save_path
+from .control import update_background
 
 # region UI Components
 
