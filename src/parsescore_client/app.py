@@ -70,5 +70,9 @@ def main(page: ft.Page):
     )
 
 
-if __name__ == "__main__":
+def launch():
     ft.app(main)
+
+
+if __name__ == "__main__":
+    launch()
