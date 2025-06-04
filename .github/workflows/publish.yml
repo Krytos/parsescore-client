@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   workflow_run:
     types: [completed]
-    workflows: [Create Release Tag on Master Push]
+    workflows: ["Create Release Tag on Master Push"]
 
 permissions:
   id-token: write

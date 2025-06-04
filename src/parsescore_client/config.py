@@ -8,8 +8,11 @@ def save_path(path):
     Saves the WoW retail folder path to a configuration file.
     """
     try:
-        with open("config.json", "r+", encoding="utf-8") as f:
-            json.dump({"wow_path": path}, f, ensure_ascii=False, indent=4)
+        with open("config.json", encoding="utf-8") as f:
+            config = json.load(f)
+        with open("config.json", "w", encoding="utf-8") as f:
+            config["wow_path"] = path
+            json.dump(config, f, ensure_ascii=False, indent=4)
         logger.info("WoW retail folder path saved successfully.")
     except FileNotFoundError as e:
         logger.info(f"Configuration file not found: {e}. Creating File.")

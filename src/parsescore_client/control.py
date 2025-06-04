@@ -1,10 +1,9 @@
 from time import sleep
 
 import httpx
+from config import load_path, load_timestamp, save_timestamp
 from loguru import logger
-
-from .config import load_path, load_timestamp, save_timestamp
-from .lua_converter import convert_to_lua
+from lua_converter import convert_to_lua
 
 logger.add("../logs/client.log", rotation="10 MB", retention="7 days", level="INFO")
 

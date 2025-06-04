@@ -1,6 +1,6 @@
 [project]
 name = "parsescore-client"
-version = "0.15"  # TODO: Change version!
+version = "0.16"  # TODO: Change version!
 description = "ParseScore - A client for collecting character data and adding it to the WoW addon"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -11,6 +11,7 @@ dependencies = [
     "SLPP",
     "thefuzz>=0.22.1",
     "httpx",
+    "flet[all]>=0.28.3",
 ]
 
 [build-system]
@@ -21,7 +22,6 @@ build-backend = "uv_build"
 dev = [
     "pytest",
     "ruff",
-    "pyinstaller>=6.14.0",
     "ty"
 ]
 
