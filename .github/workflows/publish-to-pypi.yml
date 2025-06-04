@@ -8,8 +8,6 @@ on:
   workflow_run:
     types:
       - completed
-    workflows:
-      - create-release-tag
 
 permissions:
   id-token: write
