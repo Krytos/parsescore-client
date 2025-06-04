@@ -52,7 +52,9 @@ jobs:
         shell: bash
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v1
+        uses: astral-sh/setup-uv@latest
+        with:
+          version: "latest"
 
       - name: Set up Python (using version from pyproject.toml)
         uses: actions/setup-python@v5
