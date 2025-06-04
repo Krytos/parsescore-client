@@ -6,13 +6,11 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - "master"
   workflow_dispatch:
-
 
 permissions:
   id-token: write
+  contents: read
 
 jobs:
   publish-to-pypi:
@@ -28,7 +26,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v1
+
+      - name: Extract version from pyproject.toml
+        id: get_version
+        run: |
+          PYPROJECT_PATH="pyproject.toml"
+          PACKAGE_VERSION=$(python -c "import tomllib; f=open('${PYPROJECT_PATH}', 'rb'); data=tomllib.load(f); print(data['project']['version'])")
+          echo "package_version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+          echo "Extracted version: ${PACKAGE_VERSION}"
+        shell: bash
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
@@ -36,18 +43,19 @@ jobs:
           python-version-file: "pyproject.toml"
 
       - name: Build package
-        run: uv build
+        run: uv build --frozen
 
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
-          path: dist/parsescore-client.VERSION_NUMBER
+          name: python-package-distributions-${{ steps.get_version.outputs.package_version }}
+          path: dist/
 
-      - name: Download all the dists
+      - name: Download all the dists for publishing
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
-          path: dist/parsescore-client.VERSION_NUMBER
+          name: python-package-distributions-${{ steps.get_version.outputs.package_version }}
+          path: dist/
+
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
